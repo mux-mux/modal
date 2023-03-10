@@ -90,17 +90,35 @@ window.addEventListener('DOMContentLoaded', () => {
   setClock('.timer', deadline);
 
   //Modal
-  const modalTrigger = document.querySelector('[data-modal]'),
+  const modalTrigger = document.querySelectorAll('[data-modal]'),
     modal = document.querySelector('.modal'),
     modalCloseBtn = document.querySelector('[data-close]');
 
-  modalTrigger.addEventListener('click', () => {
-    modal.classList.add('sidepanel__show');
-    modal.classList.remove('sidepanel__hide');
+  function toggleModal() {
+    if (modal.classList.contains('show')) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    modal.classList.toggle('show');
+  }
+
+  modalTrigger.forEach(btn => {
+    btn.addEventListener('click', toggleModal);
   });
 
-  modalCloseBtn.addEventListener('click', () => {
-    modal.classList.add('sidepanel__hide');
-    modal.classList.remove('sidepanel__show');
+
+  modalCloseBtn.addEventListener('click', toggleModal);
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      toggleModal();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.code === 'Escape' && modal.classList.contains('show')) {
+      toggleModal();
+    } s
   });
 });
